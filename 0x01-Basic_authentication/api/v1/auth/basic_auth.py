@@ -33,9 +33,9 @@ class BasicAuth(Auth):
             if authorization_header.index(needle) != 0:
                 return None
         except ValueError:
-           return None
+            return None
 
-        return authorization_header[len(needle):-1]
+        return authorization_header[len(needle):]
 
     def decode_base64_authorization_header(self,
                                            base64_authorization_header: str
