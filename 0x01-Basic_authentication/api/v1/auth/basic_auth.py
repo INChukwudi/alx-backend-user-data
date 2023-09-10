@@ -98,14 +98,17 @@ class BasicAuth(Auth):
         if User.count == 0:
             return None
 
-        user_list = User.search({"email": user_email})
-        if len(user_list) == 0:
-            return None
+        try:
+            user_list = User.search({"email": user_email})
+            if len(user_list) == 0:
+                return None
 
-        if not user_list[0].is_valid_password(user_pwd):
-            return None
+            if not user_list[0].is_valid_password(user_pwd):
+                return None
 
-        return user_list[0]
+            return user_list[0]
+        except Exception:
+            return None
 
     def __is_base64_string(self, prob_str: str) -> bool:
         """
