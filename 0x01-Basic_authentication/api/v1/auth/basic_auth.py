@@ -3,6 +3,7 @@
 Basic Auth Module
 """
 
+import base64
 from typing import TypeVar
 
 from .auth import Auth
@@ -46,7 +47,16 @@ class BasicAuth(Auth):
         Return:
           - str
         """
-        return None
+        if base64_authorization_header is None:
+            return None
+
+        if not isinstance(base64_authorization_header, str):
+            return None
+
+        if not self.__is_base64_string(base64_authorization_header):
+            return None
+
+        return base64.b64decode(base64_authorization_header).decode("utf-8")
 
     def extract_user_credentials(self,
                                  decoded_base64_authorization_header: str
@@ -69,3 +79,21 @@ class BasicAuth(Auth):
           - str
         """
         return None
+
+    def __is_base64_string(self, prob_str: str) -> bool:
+        """
+        __is_base64_string
+
+        Return:
+            - bool
+        """
+        try:
+            if isinstance(prob_str, str):
+                sb_bytes = bytes(prob_str, 'ascii')
+            elif isinstance(prob_str, bytes):
+                sb_bytes = sb
+            else:
+                return False
+            return base64.b64encode(base64.b64decode(sb_bytes)) == sb_bytes
+        except Exception:
+            return False
