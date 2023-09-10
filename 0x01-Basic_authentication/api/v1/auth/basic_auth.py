@@ -7,6 +7,7 @@ import base64
 from typing import TypeVar
 
 from .auth import Auth
+from models.user import User
 
 
 class BasicAuth(Auth):
@@ -88,7 +89,23 @@ class BasicAuth(Auth):
         Return:
           - str
         """
-        return None
+        if user_email is None or not isinstance(user_email, str):
+            return None
+
+        if user_pwd is None or not isinstance(user_pwd, str):
+            return None
+
+        if User.count == 0:
+            return None
+
+        user_list = User.search({"email": user_email})
+        if len(user_list) == 0:
+            return None
+
+        if not user_list[0].is_valid_password(user_pwd):
+            return None
+
+        return user_list[0]
 
     def __is_base64_string(self, prob_str: str) -> bool:
         """
