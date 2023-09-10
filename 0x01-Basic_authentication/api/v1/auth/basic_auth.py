@@ -22,7 +22,20 @@ class BasicAuth(Auth):
         Return:
           - str
         """
-        return None
+        if authorization_header is None:
+            return None
+
+        if not isinstance(authorization_header, str):
+            return None
+
+        needle = "Basic "
+        try:
+            if authorization_header.index(needle) != 0:
+                return None
+        except ValueError:
+           return None
+
+        return authorization_header[len(needle):-1]
 
     def decode_base64_authorization_header(self,
                                            base64_authorization_header: str
