@@ -24,8 +24,15 @@ class Auth():
         if excluded_paths is None or len(excluded_paths) == 0:
             return True
 
-        if path in excluded_paths or f"{path}/" in excluded_paths:
-            return False
+        for i in range(0, len(excluded_paths)):
+            try:
+                if path.index(excluded_paths[i][:-1]) == 0:
+                    return False
+            except ValueError:
+                continue
+
+        #if path in excluded_paths or f"{path}/" in excluded_paths:
+        #    return False
 
         return True
 
