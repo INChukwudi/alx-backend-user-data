@@ -65,10 +65,7 @@ class Auth():
         if request is None:
             return None
 
-        if getenv("SESSION_NAME") != "_my_session_id":
-             return None
-
-        if "_my_session_id" in request.cookies:
-            return request.cookies.get("_my_session_id")
+        if getenv("SESSION_NAME") in request.cookies:
+            return request.cookies.get(getenv("SESSION_NAME"))
 
         return None
