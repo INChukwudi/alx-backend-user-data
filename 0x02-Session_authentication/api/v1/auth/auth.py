@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-""" Auth module
+"""
+Auth module
 """
 
 from flask import request
@@ -66,6 +67,6 @@ class Auth():
             return None
 
         if getenv("SESSION_NAME") in request.cookies:
-            return request.cookies.get(getenv("SESSION_NAME"))
+            return request.cookies.get(getenv("SESSION_NAME"), None)
 
         return None
